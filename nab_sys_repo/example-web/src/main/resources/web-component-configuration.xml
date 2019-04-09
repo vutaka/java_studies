@@ -4,6 +4,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://tis.co.jp/nablarch/component-configuration"
     xsi:schemaLocation="http://tis.co.jp/nablarch/component-configuration  https://nablarch.github.io/schema/component-configuration.xsd">
 
+  <!-- システムリポジトリのテスト用設定 -->
+  <component name="exampleProvider" class="jp.co.example.util.DateExampleProvider" />
+
   <!-- テーブル定義 -->
   <import file="nablarch/schema-config.xml" />
 
