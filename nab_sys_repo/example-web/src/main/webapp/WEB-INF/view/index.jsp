@@ -11,6 +11,19 @@
   <title>Document</title>
 </head>
 <body>
+  <h1>何か値の表示</h1>
   <div>何かしろ値：<n:write name="testValue" /></div>
+  <h1>全コードの表示</h1>
+  <c:forEach var="code" items="${allCode}">
+    <div>
+      <n:write name="code.codeId" />:<n:write name="code.codeName" />
+    </div>
+  </c:forEach>
+  <h1>ID指定コードの表示</h1>
+  <c:forEach var="code" items="${codeList}">
+  <div>
+    <n:write name="code.codeId" />:<n:write name="code.codeName" />
+  </div>
+</c:forEach>
 </body>
 </html>

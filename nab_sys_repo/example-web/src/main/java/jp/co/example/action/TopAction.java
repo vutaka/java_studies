@@ -1,7 +1,6 @@
 package jp.co.example.action;
 
 import jp.co.example.util.ExampleUtil;
-import nablarch.common.web.session.SessionUtil;
 import nablarch.fw.ExecutionContext;
 import nablarch.fw.web.HttpRequest;
 import nablarch.fw.web.HttpResponse;

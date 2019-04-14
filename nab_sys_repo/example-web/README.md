@@ -1,17 +1,61 @@
-# ディレクトリについての補足
+# 何をするものか
 
-| ディレクトリ               | 補足                                                                                                                                                                             |
-|:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|db/data/                    |DBに疎通確認用データを格納するためのSQL文。                                                                                                                                       |
-|db/ddl/                     |Nablarchで使用するテーブルを作成するためのDDL。テーブルを作り直すときに使用するDROP文も用意している。                                                                             |
-|h2/bin/                     |H2 Database Engine(以下H2)に格納されているデータを確認するためのツールが格納されている(本プロジェクトは初期状態でH2を使用する構成になっている)。                                  |
-|h2/db/                      |H2のデータファイルが格納されているディレクトリ。H2のデータが壊れた際は、「SAMPLE.mv.db」を削除し、「SAMPLE.mv.db.org」を、「SAMPLE.mv.db」という名前でコピーすることで復旧できる。|
-|src/env/dev/resources/      |開発環境用の設定ファイルを格納するディレクトリ                                                                                                                                    |
-|src/env/dev/webapp/WEB-INF/ |開発環境用のweb.xmlを格納するディレクトリ                                                                                                                                         |
-|src/env/prod/resources/     |本番環境用の設定ファイルを格納するディレクトリ                                                                                                                                    |
-|src/main/resources/         |開発環境、本番環境、共に使用する設定ファイルを格納するディレクトリ                                                                                                                |
-|src/test/resources/         |自動テスト(ユニットテスト)用の設定ファイルを格納するディレクトリ                                                                                                                  |
-|tools/                      |mavenと連携して動作させるツールの設定を格納するディレクトリ                                                                                                                       |
+Nablarchの提供するシステムリポジトリの利用方法を学ぶためのもの。
+https://nablarch.github.io/docs/LATEST/doc/application_framework/application_framework/libraries/repository.html
+
+# やってること
+
+なんらかの文字列を返却するExampleUtilの内容をプロファイルごとに切り替えている。
+
+TopAction#indexからExampleUtil#getValueを呼び出し、取得した値を画面に表示している。
+
+## プロファイルと設定されている実装クラス
+
+|プロファイル|設定されている実装クラス|設定しているファイル|
+|-|-|-|
+|-(main)|`jp.co.example.util.DateExampleProvider`|`main/resources/web-component-configuration.xml`|
+|development|なし(mainが使用される)|なし|
+|development2|`jp.co.example.util.FixedExampleProvider`|`env/dev2/resources/db-for-webui_dev.xml`|
+|development3|`jp.co.example.util.SettingExampleProvider`|`env/dev3/resources/db-for-webui_dev.xml`|
+
+## 動作確認
+
+以下のコマンドをそれぞれ実行し、画面の文字を確認しましょう
+* mvn clean compile waitt:run
+* mvn -P development2 clean compile waitt:run
+* mvn -P development3 clean compile waitt:run
+
+# 演習
+
+## 1. 実装クラスの作成と設定
+
+以下の実装クラスを作成・設定し、画面に表示させましょう
+* `jp.co.example.util.ExampleProvider`を継承する
+* プロパティを二つ持ちxmlから設定できる
+* `getValue`で連結した文字列を表示する。
+
+## 2. Util含め一から自分で作る
+
+以下のものを実装しましょう。
+
+よくある要求である単体テストでは固定の値を返却するAPIを用意し、それ以降のテストでは本来の取得元から値を取得できるよう実装する。
+
+あくまでこれは演習用の問題です。Nablarchはコードに対する管理機能はここよりもいいものがあります。
+
+### interfase
+* `CodeNameManager` インターフェース
+* 全ての `jp.co.example.entity.CodeName` を返却する `getAllCodeNames`
+* 指定したCodeIdに一致する `jp.co.example.entity.CodeName` を返却する `getCodeNames(String)`
+### Utilクラス
+* `CodeUtil` クラス
+* staticなメソッドのみ提供するためコンストラクタは `private` にすること
+* システムリポジトリの `CodeNameManager` を取得する。`getManager()`
+* `getAllCodeNames` : 取得した `CodeNameManager` の 同名メソッドに処理を委譲する
+* `getCodeNames(String)` : 取得した `CodeNameManager` の 同名メソッドに処理を委譲する
+### 各実装クラス
+以下の二つの実装クラスを用意すること
+* DBのコードTからデータを取得する `DbCodeNameManager`
+* 設定ファイルに設定した内容からデータを取得する `MockCodeNameManager`
 
 # H2に格納されているデータを確認する方法
 
